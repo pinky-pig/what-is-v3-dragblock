@@ -9,6 +9,7 @@
   "scripts": {
     "lint": "eslint .",
     "docs": "vitepress dev packages --open",
+    "docs:build": "vitepress build packages",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
