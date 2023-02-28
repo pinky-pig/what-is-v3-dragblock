@@ -8,14 +8,63 @@ V3-dragblock 是一个基于 Vue3 的拖拽组件，支持拖拽移动、缩放�
 
 - Vue >= 2.7 or Vue >= 3.0
 
-## Installation
+## Feature
 
-```bash
-npm i @vueuse/core
-```
-
+- 可配置 draggable 、 resizable 、 adsorbable
+- 可传入 draggable 和 resizable 的 start 和 end 事件
+- 可配置吸附线 adsorbline 的样式， 及吸附误差范围
 
 ## Demo
 
 - [Vercel - v3-dragblock](https://v3-drag.vercel.app/)
 
+## Installation
+
+```bash
+npm i v3-dragblock
+```
+
+## Usage
+
+如果已经经过 `npm i v3-dragblock`，那么下面就开始使用。
+仅仅只需要，在需要的组件中 `import V3Dragblock from 'v3-dragblock'` 后，定义子项组件传入 `V3Dragblock` 后就可以使用。
+当然需要通过 `CSS` 设置拖拽画布的大小。如果有不太理解的可以参考上面的 [Demo Github](https://github.com/pinky-pig/what-is-drag-resize-attached-card)
+
+
+```vue
+<script setup lang="ts">
+import V3Dragblock from 'v3-dragblock'
+import GridCellOne from '../components/GridCellOne.vue'
+import GridCellTwo from '../components/GridCellTwo.vue'
+import GridCellThree from '../components/GridCellThree.vue'
+import GridCellFour from '../components/GridCellFour.vue'
+
+const gridCells = ref([
+  { id: '0', index: 0, x: 80, y: 310, width: 180, height: 230, component: markRaw(GridCellOne) },
+  { id: '1', index: 0, x: 550, y: 95, width: 240, height: 240, component: markRaw(GridCellTwo) },
+  { id: '2', index: 0, x: 377, y: 457, width: 305, height: 70, component: markRaw(GridCellThree) },
+  { id: '3', index: 0, x: 180, y: 30, width: 130, height: 145, component: markRaw(GridCellFour) },
+])
+</script>
+
+<template>
+  <V3Dragblock
+    class="V3Dragblock"
+    :grid-cells="gridCells"
+  />
+</template>
+
+<style scoped>
+.V3Dragblock{
+  background: #f7f4f0;
+  width: 75vw;
+  height: 75vh;
+  border-radius: 10px;
+  border-width: 1px;
+  position: relative;
+  margin-left: auto;
+  margin-right: auto;
+  overflow: hidden;
+}
+</style>
+```
