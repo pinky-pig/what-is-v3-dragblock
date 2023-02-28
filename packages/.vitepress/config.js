@@ -26,6 +26,7 @@ export default defineConfig({
     ],
     sidebar: {
       '/guide/': guide,
+      '/develop/': guide,
       // '/project/': project,
     },
     algolia: {
