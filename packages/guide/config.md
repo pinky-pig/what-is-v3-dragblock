@@ -81,31 +81,15 @@ const adsorbLineStyle = {
 }
 ```
 
-## `@dragging="print('dragging', $event)" | @resizing="print('resizing', $event)"`
-  
-正在拖拽中的事件， 其实就是监听的 move 事件，返回的是当前拖拽的组件 。
+## `@dragging | @resizing | @drag-start | @resize-start| @drag-end|@resize-end`
 
-```
-{ id: '0', index: 0, x: 80, y: 310, width: 180, height: 230, component: markRaw(GridCellOne) }
-```
+| handles | 作用 | 返回值|
+| :---: | :--: |:--: |
+|  @dragging  |   正在拖拽  | 当前对象 |
+|  @resizing  |   正在缩放  | 当前对象 |
+|  @drag-start |   拖拽开始  | 当前对象 |
+|  @resize-start |   缩放开始  | 当前对象 |
+|  @drag-end |   拖拽结束  | 所有对象的信息 |
+|  @resize-end |   缩放结束  | 所有对象的信息 |
+ 
 
-## `@drag-start="print('drag-start', $event)" | @resize-start="print('resize-start', $event)"`
-
-开始拖拽时事件， 其实就是监听的 down 事件，返回的是当前拖拽的组件。
-
-```
-{ id: '0', index: 0, x: 80, y: 310, width: 180, height: 230, component: markRaw(GridCellOne) }
-```
-
-## `@drag-end="save('drag-end', $event)" | @resize-end="save('resize-end', $event)"`
-
-拖拽结束时事件， 其实就是监听的 up 事件，返回的是当前盒子内所有组件的拖拽位置信息。
-
-```
-[
-  { id: '0', index: 0, x: 80, y: 310, width: 180, height: 230},
-  { id: '1', index: 0, x: 550, y: 95, width: 240, height: 240 },
-  { id: '2', index: 0, x: 377, y: 457, width: 305, height: 70 },
-  { id: '3', index: 0, x: 180, y: 30, width: 130, height: 145 },
-]
-```
