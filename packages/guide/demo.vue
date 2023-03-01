@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import 'uno.css'
 
-import V3Dragblock from 'v3-dragblock'
 import { markRaw, ref } from 'vue'
+import V3Dragblock from '../dragblock/core/index'
 import GridCellOne from '../components/GridCellOne.vue'
 import GridCellTwo from '../components/GridCellTwo.vue'
 import GridCellThree from '../components/GridCellThree.vue'

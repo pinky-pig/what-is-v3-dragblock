@@ -1,13 +1,13 @@
-<!-- 
+
 <script setup>
 import 'uno.css'
 import V3DragblockDemo from './demo.vue'
-</script> -->
+</script>
 
 # Get Started
 
 <br> 
-<!-- <V3DragblockDemo /> -->
+<V3DragblockDemo />
 
 ::: tip
 使用 v3-dragblock 开发的示例。   
