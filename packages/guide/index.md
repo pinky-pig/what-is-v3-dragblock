@@ -1,30 +1,46 @@
-# Get Start
+
+<script setup>
+import 'uno.css'
+import V3DragblockDemo from './demo.vue'
+</script>
+
+# Get Started
+
+<br> 
+<V3DragblockDemo />
+
+::: tip
+使用 v3-dragblock 开发的示例。   
+Versel 演示地址： [Demo - Vercel](https://v3-drag.vercel.app/)  
+Github 代码地址： [Demo -Github](https://github.com/pinky-pig/what-is-drag-resize-attached-card)
+:::
+
+## 🎉 Introduce
 
 V3-dragblock 是一个基于 Vue3 的拖拽组件，支持拖拽移动、缩放、吸附功能。目前初始版本暂时只支持 Vue3 版本，而且具有很多优化空间。
 
-## Requirements
-
-> 🥝 后续会进行代码优化，并支持 Vue2 和 React 版本。
-
-- Vue >= 2.7 or Vue >= 3.0
-
-## Feature
+## 🏄‍♂️ Feature
 
 - 可配置 draggable 、 resizable 、 adsorbable
 - 可传入 draggable 和 resizable 的 start 和 end 事件
 - 可配置吸附线 adsorbline 的样式， 及吸附误差范围
 
-## Demo
 
-- [Vercel - v3-dragblock](https://v3-drag.vercel.app/)
+## 👊 Todo
 
-## Installation
+- [ ] 简化组织代码
+- [ ] 按需打包 VueUse 的依赖
+- [ ] 适配 Vue2 
+- [ ] 适配 React 
+
+
+## ⚡ Installation
 
 ```bash
 npm i v3-dragblock
 ```
 
-## Usage
+## 🍄 Usage Steps
 
 如果已经经过 `npm i v3-dragblock`，那么下面就开始使用。
 仅仅只需要，在需要的组件中 `import V3Dragblock from 'v3-dragblock'` 后，定义子项组件传入 `V3Dragblock` 后就可以使用。
