@@ -10,7 +10,7 @@ export default defineConfig({
   },
   build: {
     lib: {
-      entry: resolve(__dirname, 'core/index.ts'),
+      entry: resolve(__dirname, 'src/index.ts'),
       name: 'v3-dragblock',
       fileName: format => `v3-dragblock.${format}.js`,
     },

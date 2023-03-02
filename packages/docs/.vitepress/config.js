@@ -7,7 +7,7 @@ export default defineConfig({
   title: 'V3-Dragblock', // 所有文档的浏览器标签title
   description: 'Vue3 版本的一个拖拽组件', // 会渲染成<meta>标签，SEO用
   head: [
-    ['link', { rel: 'icon', href: '/logo.svg', crossorigin: '' }],
+    ['link', { rel: 'icon', href: '/logo.png', crossorigin: '' }],
   ],
 
   themeConfig: {

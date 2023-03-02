@@ -2,7 +2,7 @@
   <div
     class="dragItemBox"
   >
-    <svg style="pointer-events: none;transform: scale(1.5) translateY(-5px) translateX(3px);" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <svg style="pointer-events: none ;transform: scale(1.5) translateY(-5px) translateX(3px);" viewBox="0 0 1080 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <filter
           id="filter" x="-20%" y="-20%" width="140%" height="140%" filterUnits="objectBoundingBox"

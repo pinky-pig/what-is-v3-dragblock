@@ -14,6 +14,6 @@
     "noEmit": true,
     "suppressImplicitAnyIndexErrors": true
   },
-  "include": ["core/**/*.ts", "core/**/*.d.ts", "core/**/*.tsx", "core/**/*.vue"],
+  "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

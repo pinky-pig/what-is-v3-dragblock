@@ -1,6 +1,5 @@
 
 <script setup>
-import 'uno.css'
 import V3DragblockDemo from './demo.vue'
 </script>
 
