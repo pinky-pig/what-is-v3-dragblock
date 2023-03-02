@@ -5,17 +5,13 @@ import GridCellOne from './src/components/GridCellOne.vue'
 import GridCellTwo from './src/components/GridCellTwo.vue'
 import GridCellThree from './src/components/GridCellThree.vue'
 import GridCellFour from './src/components/GridCellFour.vue'
-// import GridContainer from '~/package/GridContainer.vue'
-// shallowRef(defineAsyncComponent(() => import('./GridCellOne.vue')))
 
-const CELLS = [
+const gridCells = ref([
   { id: '0', index: 0, x: 80, y: 310, width: 180, height: 230, component: markRaw(GridCellOne) },
   { id: '1', index: 0, x: 550, y: 95, width: 240, height: 240, component: markRaw(GridCellTwo) },
   { id: '2', index: 0, x: 377, y: 457, width: 305, height: 70, component: markRaw(GridCellThree) },
   { id: '3', index: 0, x: 180, y: 30, width: 130, height: 145, component: markRaw(GridCellFour) },
-]
-
-const gridCells = ref(CELLS)
+])
 
 const adsorbLineStyle = {
   stroke: 'black',
@@ -47,9 +43,9 @@ const print = (val: string, e: any) => {
  * 存储到JSON
  */
 const save = (val: string, e: any) => {
-  if (val === 'drag-end' || val === 'resize-end') {
-    // localStorage.setItem('layoutJSON', JSON.stringify(e))
-  }
+  // if (val === 'drag-end' || val === 'resize-end') {
+  //   // localStorage.setItem('layoutJSON', JSON.stringify(e))
+  // }
 }
 </script>
 
