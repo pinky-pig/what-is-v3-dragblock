@@ -76,36 +76,36 @@ const save = (val: string, e: any) => {
 
     <div class="foot">
       <button>
-        <a href="https://www.npmjs.com/package/v3-dragblock" target="_blank"> NPM </a>
+        <a href="https://www.npmjs.com/package/v3-dragblock" title="NPM" target="_blank">
+          <svg class="foot-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="M4 28V4h24v24H4zM8.5 8.5v15H16v-12h4.5v12h3v-15h-15z" /></svg>
+        </a>
       </button>
       <button>
-        <a href="https://github.com/pinky-pig/what-is-v3-dragblock" target="_blank"> Github</a>
+        <a href="https://github.com/pinky-pig/what-is-v3-dragblock" title="Github" target="_blank">
+          <svg class="foot-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" fill-rule="evenodd" d="M16 2a14 14 0 0 0-4.43 27.28c.7.13 1-.3 1-.67v-2.38c-3.89.84-4.71-1.88-4.71-1.88a3.71 3.71 0 0 0-1.62-2.05c-1.27-.86.1-.85.1-.85a2.94 2.94 0 0 1 2.14 1.45a3 3 0 0 0 4.08 1.16a2.93 2.93 0 0 1 .88-1.87c-3.1-.36-6.37-1.56-6.37-6.92a5.4 5.4 0 0 1 1.44-3.76a5 5 0 0 1 .14-3.7s1.17-.38 3.85 1.43a13.3 13.3 0 0 1 7 0c2.67-1.81 3.84-1.43 3.84-1.43a5 5 0 0 1 .14 3.7a5.4 5.4 0 0 1 1.44 3.76c0 5.38-3.27 6.56-6.39 6.91a3.33 3.33 0 0 1 .95 2.59v3.84c0 .46.25.81 1 .67A14 14 0 0 0 16 2Z" /></svg>
+        </a>
       </button>
       <button>
-        <a href="https://what-is-v3-dragblock.vercel.app/" target="_blank"> Document </a>
+        <a href="https://what-is-v3-dragblock.vercel.app/" title="Document" target="_blank">
+          <svg class="foot-svg" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><path fill="currentColor" d="m25.7 9.3l-7-7c-.2-.2-.4-.3-.7-.3H8c-1.1 0-2 .9-2 2v24c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V10c0-.3-.1-.5-.3-.7zM18 4.4l5.6 5.6H18V4.4zM24 28H8V4h8v6c0 1.1.9 2 2 2h6v16z" /><path fill="currentColor" d="M10 22h12v2H10zm0-6h12v2H10z" /></svg>
+        </a>
       </button>
     </div>
   </div>
 </template>
 
 <style scoped>
+.foot-svg{
+  color: inherit;
+  height: 1.7em;
+  width: 1.7em;
+  color: #A2A7B3;
+}
 button{
   cursor: pointer;
   color: black;
-  font-weight: 600;
-  font-size: 17px;
-  background: #f7f4f0;
-  height: 40px;
-  border: 3px solid black;
-  border-radius: 0.75em;
-  padding: 0 15px;
-}
-a{
-  text-decoration: none;
-  color:#333;
-}
-a:hover{
-  color:rgb(143, 135, 135);
+  background: transparent;
+  border: 0px solid black;
 }
 .drag-container{
   background: #f7f4f0;
@@ -154,7 +154,7 @@ a:hover{
   margin: 1.25rem;
   display: flex;
   justify-content: center;
-  grid-gap: 0.75rem;
-  gap: 0.75rem;
+  grid-gap: 5px;
+  gap: 5px;
 }
 </style>
