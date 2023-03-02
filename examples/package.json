@@ -13,8 +13,7 @@
   },
   "dependencies": {
     "@vitejs/plugin-vue": "^4.0.0",
-    "v3-dragblock": "1.0.6",
-    "vite": "^4.1.2",
-    "vue": "^3.2.36"
+    "v3-dragblock": "workspace:^1.0.6",
+    "vite": "^4.1.2"
   }
 }
