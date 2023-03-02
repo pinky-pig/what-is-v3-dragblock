@@ -29,14 +29,14 @@ export default defineConfig({
       '/develop/': guide,
       // '/project/': project,
     },
-    algolia: {
-      appId: 'L9KMDUKCGI',
-      apiKey: 'ab27f8eec3147ace8f540b92e68504c7',
-      indexName: 'pinky-pig',
-      // searchParameters: {
-      //     facetFilters: ['tags:guide,api']
-      // }
-    },
+    // algolia: {
+    //   appId: 'L9KMDUKCGI',
+    //   apiKey: 'ab27f8eec3147ace8f540b92e68504c7',
+    //   indexName: 'pinky-pig',
+    //   // searchParameters: {
+    //   //     facetFilters: ['tags:guide,api']
+    //   // }
+    // },
 
   },
 })
