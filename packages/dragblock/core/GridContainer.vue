@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { defineEmits, defineProps, onMounted, ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import type { GridCellsType, GridContainerProps } from './GridContainer'
 import { initGridContainer } from './GridContainer'
 import BoundsSVGContainer from './BoundsSVGContainer.vue'
