@@ -5,7 +5,12 @@
 	<h6 align="center">Component based in Vue3</h6>
 </div>
 
-# Get Started
+
+# 🌸 Get Started
+
+<p align="center">
+<img src="https://cdn.jsdelivr.net/gh/pinky-pig/pic-bed/imagesdrag.gif"  height="300">
+</p>
 
 使用 v3-dragblock 开发的示例。   
 使用文档地址：[Document](https://what-is-v3-dragblock.vercel.app/)  
