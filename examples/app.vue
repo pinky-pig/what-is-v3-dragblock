@@ -73,10 +73,40 @@ const save = (val: string, e: any) => {
         />
       </div>
     </div>
+
+    <div class="foot">
+      <button>
+        <a href="https://www.npmjs.com/package/v3-dragblock" target="_blank"> NPM </a>
+      </button>
+      <button>
+        <a href="https://github.com/pinky-pig/what-is-v3-dragblock" target="_blank"> Github</a>
+      </button>
+      <button>
+        <a href="https://what-is-v3-dragblock.vercel.app/" target="_blank"> Document </a>
+      </button>
+    </div>
   </div>
 </template>
 
 <style scoped>
+button{
+  cursor: pointer;
+  color: black;
+  font-weight: 600;
+  font-size: 17px;
+  background: #f7f4f0;
+  height: 40px;
+  border: 3px solid black;
+  border-radius: 0.75em;
+  padding: 0 15px;
+}
+a{
+  text-decoration: none;
+  color:#333;
+}
+a:hover{
+  color:rgb(143, 135, 135);
+}
 .drag-container{
   background: #f7f4f0;
   width: 100%;
@@ -87,6 +117,7 @@ const save = (val: string, e: any) => {
   right: 0;
   bottom: 0;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
 }
@@ -113,5 +144,17 @@ const save = (val: string, e: any) => {
   margin-left: auto;
   margin-right: auto;
   overflow: hidden;
+}
+
+.foot{
+  user-select: none;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
+  color: rgba(156, 163, 175, 1);
+  margin: 1.25rem;
+  display: flex;
+  justify-content: center;
+  grid-gap: 0.75rem;
+  gap: 0.75rem;
 }
 </style>
