@@ -97,46 +97,46 @@ export function initGridContainer(
           nVal.y = elementLimitSize.height - nVal.height
         }
 
-        if (currentScaleType === 'top_left') {
-          if (nVal.x < elementLimitSize.x) {
-            nVal.width += nVal.x
-            nVal.x = 0
-          }
-          if (nVal.y <= elementLimitSize.y) {
-            nVal.height += nVal.y
-            nVal.y = 0
-          }
-        }
-        if (currentScaleType === 'top_right') {
-          if ((nVal.x + nVal.width) > elementLimitSize.width) {
-            nVal.width += (elementLimitSize.width - nVal.width - nVal.x)
-            nVal.x = elementLimitSize.width - nVal.width
-          }
-          if (nVal.y <= elementLimitSize.y) {
-            nVal.height += nVal.y
-            nVal.y = 0
-          }
-        }
-        if (currentScaleType === 'bottom_left') {
-          if ((nVal.y + nVal.height) > elementLimitSize.height) {
-            nVal.height += (elementLimitSize.height - nVal.height - nVal.y)
-            nVal.y = elementLimitSize.height - nVal.height
-          }
-          if (nVal.x < elementLimitSize.x) {
-            nVal.width += nVal.x
-            nVal.x = 0
-          }
-        }
-        if (currentScaleType === 'bottom_right') {
-          if ((nVal.y + nVal.height) > elementLimitSize.height) {
-            nVal.height += (elementLimitSize.height - nVal.height - nVal.y)
-            nVal.y = elementLimitSize.height - nVal.height
-          }
-          if ((nVal.x + nVal.width) > elementLimitSize.width) {
-            nVal.width += (elementLimitSize.width - nVal.width - nVal.x)
-            nVal.x = elementLimitSize.width - nVal.width
-          }
-        }
+        // if (currentScaleType === 'top_left') {
+        //   if (nVal.x < elementLimitSize.x) {
+        //     nVal.width += nVal.x
+        //     nVal.x = 0
+        //   }
+        //   if (nVal.y <= elementLimitSize.y) {
+        //     nVal.height += nVal.y
+        //     nVal.y = 0
+        //   }
+        // }
+        // if (currentScaleType === 'top_right') {
+        //   if ((nVal.x + nVal.width) > elementLimitSize.width) {
+        //     nVal.width += (elementLimitSize.width - nVal.width - nVal.x)
+        //     nVal.x = elementLimitSize.width - nVal.width
+        //   }
+        //   if (nVal.y <= elementLimitSize.y) {
+        //     nVal.height += nVal.y
+        //     nVal.y = 0
+        //   }
+        // }
+        // if (currentScaleType === 'bottom_left') {
+        //   if ((nVal.y + nVal.height) > elementLimitSize.height) {
+        //     nVal.height += (elementLimitSize.height - nVal.height - nVal.y)
+        //     nVal.y = elementLimitSize.height - nVal.height
+        //   }
+        //   if (nVal.x < elementLimitSize.x) {
+        //     nVal.width += nVal.x
+        //     nVal.x = 0
+        //   }
+        // }
+        // if (currentScaleType === 'bottom_right') {
+        //   if ((nVal.y + nVal.height) > elementLimitSize.height) {
+        //     nVal.height += (elementLimitSize.height - nVal.height - nVal.y)
+        //     nVal.y = elementLimitSize.height - nVal.height
+        //   }
+        //   if ((nVal.x + nVal.width) > elementLimitSize.width) {
+        //     nVal.width += (elementLimitSize.width - nVal.width - nVal.x)
+        //     nVal.x = elementLimitSize.width - nVal.width
+        //   }
+        // }
 
         // 3.缩放最小
         if (nVal.width <= 30 && currentScaleType === 'left') {
@@ -577,6 +577,17 @@ export function initGridContainer(
           }
         }
         if (currentScaleType === 'top_left') {
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.height += currentClickedElement.value.y
+            currentClickedElement.value.y = 0
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              return
+            }
+            return
+          }
+
           if (adsorbedLine.value.l.length === 0 && adsorbedLine.value.t.length === 0) {
             currentClickedElement.value.x += disX
             currentClickedElement.value.width -= disX
