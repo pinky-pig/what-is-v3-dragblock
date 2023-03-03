@@ -274,6 +274,21 @@ export function initGridContainer(
   }
   function mousemove(e: MouseEvent) {
     mouseTo = { x: e.clientX, y: e.clientY }
+    const rect = containerRef.value?.getBoundingClientRect()
+
+    if (!rect)
+      return
+
+    // 左边超过最左边边界 (mouseTo.x - rect.left) < 0
+    // 上边超过最上边边界 (mouseTo.y - rect.top) < 0
+    // 右边超过最右边边界 (rect.left + rect.width - mouseTo.x) < 0
+    // 下边超过最下边边界 (rect.top + rect.height - mouseTo.y) < 0
+
+    // 左边超过最右边（ 最小宽度 30 ） mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) > 0
+    // 上边超过最下边（ 最小高度 30 ） mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) > 0
+    // 右边超过最左边（ 最小宽度 30 ） mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0
+    // 下边超过最上边（ 最小高度 30 ） mouseTo.y + 30 - rect.height < 0
+
     const disX = (mouseTo.x - mouseFrom.x)
     const disY = (mouseTo.y - mouseFrom.y)
     if (mouseFrom.x !== 0 && mouseFrom.y !== 0 && currentClickedElement.value) {
@@ -403,109 +418,161 @@ export function initGridContainer(
       else if (transformMode.value === 'Resize' && propsOption.resizable && propsOption.adsorbable) {
         // 😅 开始变形！~
         if (currentScaleType === 'left') {
-          if (adsorbedLine.value.l.length === 0) {
-            // 说明没有左边线
-            currentClickedElement.value.x += disX
-            currentClickedElement.value.width -= disX
-
-            adsorbedLine.value.l = []
-            mouseFrom = { x: e.clientX, y: e.clientY }
+          // 是为了判断 当前鼠标是否已经超过最右边
+          if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+            currentClickedElement.value.x += currentClickedElement.value.width - 30
+            currentClickedElement.value.width = 30
             createAttachedLineForScale()
           }
           else {
-            // 说明有左边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
-            const left = adsorbedLine.value.l[0]
-            if (
-              ((Math.abs(left.x) - DEVIATION) < (currentClickedElement.value.x + disX) && (currentClickedElement.value.x + disX) < (Math.abs(left.x) + DEVIATION))
-              || ((Math.abs(left.x + left.width) - DEVIATION) < (currentClickedElement.value.x + disX) && (currentClickedElement.value.x + disX) < (Math.abs(left.x + left.width) + DEVIATION))
-            ) {
-              // 在误差内。不能缩放了
+            // 这里 mouseTo.x - rect.left 是为了判断 当前鼠标是否已经超过最左边
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
             }
             else {
-              // disX是当前的减去上次的。偏移值和宽度一个增加一个必然就减小
-              currentClickedElement.value.x += disX
-              currentClickedElement.value.width -= disX
-              adsorbedLine.value.l = []
-              mouseFrom = { x: e.clientX, y: e.clientY }
-              createAttachedLineForScale()
+              if (adsorbedLine.value.l.length === 0) {
+              // 说明没有左边线
+                currentClickedElement.value.x += disX
+                currentClickedElement.value.width -= disX
+
+                adsorbedLine.value.l = []
+                mouseFrom = { x: e.clientX, y: e.clientY }
+                createAttachedLineForScale()
+              }
+              else {
+              // 说明有左边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
+                const left = adsorbedLine.value.l[0]
+                if (
+                  ((Math.abs(left.x) - DEVIATION) < (currentClickedElement.value.x + disX) && (currentClickedElement.value.x + disX) < (Math.abs(left.x) + DEVIATION))
+                  || ((Math.abs(left.x + left.width) - DEVIATION) < (currentClickedElement.value.x + disX) && (currentClickedElement.value.x + disX) < (Math.abs(left.x + left.width) + DEVIATION))
+                ) {
+                // 在误差内。不能缩放了
+                }
+                else {
+                // disX是当前的减去上次的。偏移值和宽度一个增加一个必然就减小
+                  currentClickedElement.value.x += disX
+                  currentClickedElement.value.width -= disX
+                  adsorbedLine.value.l = []
+                  mouseFrom = { x: e.clientX, y: e.clientY }
+                  createAttachedLineForScale()
+                }
+              }
             }
           }
         }
         if (currentScaleType === 'right') {
-          if (adsorbedLine.value.r.length === 0) {
-            // 说明没有右边线
-            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
-            adsorbedLine.value.r = []
-            mouseFrom = { x: e.clientX, y: e.clientY }
+          if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+            currentClickedElement.value.width = 30
             createAttachedLineForScale()
           }
           else {
-            // 说明有右边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
-            const right = adsorbedLine.value.r[0]
-            if (
-              ((Math.abs(right.x) - DEVIATION) < (currentClickedElement.value.x + currentClickedElement.value.width + disX) && (currentClickedElement.value.x + currentClickedElement.value.width + disX) < (Math.abs(right.x) + DEVIATION))
-              || ((Math.abs(right.x + right.width) - DEVIATION) < (currentClickedElement.value.x + currentClickedElement.value.width + disX) && (currentClickedElement.value.x + currentClickedElement.value.width + disX) < (Math.abs(right.x + right.width) + DEVIATION))
-            ) {
-              // 在误差内。不能缩放了
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
             }
             else {
-              currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
-              adsorbedLine.value.r = []
-              mouseFrom = { x: e.clientX, y: e.clientY }
-              createAttachedLineForScale()
+              if (adsorbedLine.value.r.length === 0) {
+                // 说明没有右边线
+                currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+                adsorbedLine.value.r = []
+                mouseFrom = { x: e.clientX, y: e.clientY }
+                createAttachedLineForScale()
+              }
+              else {
+                // 说明有右边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
+                const right = adsorbedLine.value.r[0]
+                if (
+                  ((Math.abs(right.x) - DEVIATION) < (currentClickedElement.value.x + currentClickedElement.value.width + disX) && (currentClickedElement.value.x + currentClickedElement.value.width + disX) < (Math.abs(right.x) + DEVIATION))
+                  || ((Math.abs(right.x + right.width) - DEVIATION) < (currentClickedElement.value.x + currentClickedElement.value.width + disX) && (currentClickedElement.value.x + currentClickedElement.value.width + disX) < (Math.abs(right.x + right.width) + DEVIATION))
+                ) {
+                  // 在误差内。不能缩放了
+                }
+                else {
+                  currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+                  adsorbedLine.value.r = []
+                  mouseFrom = { x: e.clientX, y: e.clientY }
+                  createAttachedLineForScale()
+                }
+              }
             }
           }
         }
         if (currentScaleType === 'top') {
-          if (adsorbedLine.value.t.length === 0) {
-            // 说明没有左边线
-            currentClickedElement.value.y += disY
-            currentClickedElement.value.height -= disY
-            adsorbedLine.value.t = []
-            mouseFrom = { x: e.clientX, y: e.clientY }
+          if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+            currentClickedElement.value.y += currentClickedElement.value.height - 30
+            currentClickedElement.value.height = 30
             createAttachedLineForScale()
           }
           else {
-            // 说明有左边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
-            const top = adsorbedLine.value.t[0]
-            if (
-              ((Math.abs(top.y) - DEVIATION) < (currentClickedElement.value.y + disY) && (currentClickedElement.value.y + disY) < (Math.abs(top.y) + DEVIATION))
-              || ((Math.abs(top.y + top.height) - DEVIATION) < (currentClickedElement.value.y + disY) && (currentClickedElement.value.y + disY) < (Math.abs(top.y + top.height) + DEVIATION))
-            ) {
-              // 在误差内。不能缩放了
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
             }
             else {
-              // disX是当前的减去上次的。偏移值和宽度一个增加一个必然就减小
-              currentClickedElement.value.y += disY
-              currentClickedElement.value.height -= disY
-              adsorbedLine.value.t = []
-              mouseFrom = { x: e.clientX, y: e.clientY }
-              createAttachedLineForScale()
+              if (adsorbedLine.value.t.length === 0) {
+                // 说明没有左边线
+                currentClickedElement.value.y += disY
+                currentClickedElement.value.height -= disY
+                adsorbedLine.value.t = []
+                mouseFrom = { x: e.clientX, y: e.clientY }
+                createAttachedLineForScale()
+              }
+              else {
+                // 说明有左边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
+                const top = adsorbedLine.value.t[0]
+                if (
+                  ((Math.abs(top.y) - DEVIATION) < (currentClickedElement.value.y + disY) && (currentClickedElement.value.y + disY) < (Math.abs(top.y) + DEVIATION))
+                  || ((Math.abs(top.y + top.height) - DEVIATION) < (currentClickedElement.value.y + disY) && (currentClickedElement.value.y + disY) < (Math.abs(top.y + top.height) + DEVIATION))
+                ) {
+                  // 在误差内。不能缩放了
+                }
+                else {
+                  // disX是当前的减去上次的。偏移值和宽度一个增加一个必然就减小
+                  currentClickedElement.value.y += disY
+                  currentClickedElement.value.height -= disY
+                  adsorbedLine.value.t = []
+                  mouseFrom = { x: e.clientX, y: e.clientY }
+                  createAttachedLineForScale()
+                }
+              }
             }
           }
         }
         if (currentScaleType === 'bottom') {
-          if (adsorbedLine.value.b.length === 0) {
-            // 说明没有右边线
-            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
-            adsorbedLine.value.b = []
-            mouseFrom = { x: e.clientX, y: e.clientY }
+          if (mouseTo.y + 30 - rect.height <= 0) {
+            currentClickedElement.value.height = 30
             createAttachedLineForScale()
           }
           else {
-            // 说明有右边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
-            const bottom = adsorbedLine.value.b[0]
-            if (
-              ((Math.abs(bottom.y) - DEVIATION) < (currentClickedElement.value.y + currentClickedElement.value.height + disY) && (currentClickedElement.value.y + currentClickedElement.value.height + disY) < (Math.abs(bottom.y) + DEVIATION))
-              || ((Math.abs(bottom.y + bottom.height) - DEVIATION) < (currentClickedElement.value.y + currentClickedElement.value.height + disY) && (currentClickedElement.value.y + currentClickedElement.value.height + disY) < (Math.abs(bottom.y + bottom.height) + DEVIATION))
-            ) {
-              // 在误差内。不能缩放了
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
             }
             else {
-              currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
-              adsorbedLine.value.b = []
-              mouseFrom = { x: e.clientX, y: e.clientY }
-              createAttachedLineForScale()
+              if (adsorbedLine.value.b.length === 0) {
+                // 说明没有右边线
+                currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+                adsorbedLine.value.b = []
+                mouseFrom = { x: e.clientX, y: e.clientY }
+                createAttachedLineForScale()
+              }
+              else {
+                // 说明有右边线。因为左边线可能出现在其他元素的左边或者右边，所以有两个判断，加其他元素的宽度
+                const bottom = adsorbedLine.value.b[0]
+                if (
+                  ((Math.abs(bottom.y) - DEVIATION) < (currentClickedElement.value.y + currentClickedElement.value.height + disY) && (currentClickedElement.value.y + currentClickedElement.value.height + disY) < (Math.abs(bottom.y) + DEVIATION))
+                  || ((Math.abs(bottom.y + bottom.height) - DEVIATION) < (currentClickedElement.value.y + currentClickedElement.value.height + disY) && (currentClickedElement.value.y + currentClickedElement.value.height + disY) < (Math.abs(bottom.y + bottom.height) + DEVIATION))
+                ) {
+                  // 在误差内。不能缩放了
+                }
+                else {
+                  currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+                  adsorbedLine.value.b = []
+                  mouseFrom = { x: e.clientX, y: e.clientY }
+                  createAttachedLineForScale()
+                }
+              }
             }
           }
         }
