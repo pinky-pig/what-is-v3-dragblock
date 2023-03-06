@@ -1317,25 +1317,174 @@ export function initGridContainer(
       }
       else if (transformMode.value === 'Resize' && propsOption.resizable && !propsOption.adsorbable) {
         if (currentScaleType === 'left') {
-          currentClickedElement.value.x += disX
-          currentClickedElement.value.width -= disX
+          // 这里是为了判断 当前鼠标已经超过左边线的最右值
+          if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+            currentClickedElement.value.x += currentClickedElement.value.width - 30
+            currentClickedElement.value.width = 30
+          }
+          else {
+            // 这里 mouseTo.x - rect.left 是为了判断 当前鼠标是否已经超过最左边
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+            }
+            else {
+              currentClickedElement.value.x += disX
+              currentClickedElement.value.width -= disX
+            }
+          }
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
         if (currentScaleType === 'right') {
-          currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+          if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+            currentClickedElement.value.width = 30
+            createAttachedLineForScale()
+          }
+          else {
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+            }
+            else {
+              currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+              mouseFrom = { x: e.clientX, y: e.clientY }
+            }
+          }
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
         if (currentScaleType === 'top') {
-          currentClickedElement.value.y += disY
-          currentClickedElement.value.height -= disY
+          if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+            currentClickedElement.value.y += currentClickedElement.value.height - 30
+            currentClickedElement.value.height = 30
+            createAttachedLineForScale()
+          }
+          else {
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+            }
+            else {
+              currentClickedElement.value.y += disY
+              currentClickedElement.value.height -= disY
+            }
+          }
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
         if (currentScaleType === 'bottom') {
-          currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+          if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+            currentClickedElement.value.height = 30
+            createAttachedLineForScale()
+          }
+          else {
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+            }
+            else {
+              currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            }
+          }
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
 
         if (currentScaleType === 'top_left') {
+          // 贴左边
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.width += currentClickedElement.value.x
+            currentClickedElement.value.x = 0
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.height += currentClickedElement.value.y
+            currentClickedElement.value.y = 0
+
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴右边
+          if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+            currentClickedElement.value.x += currentClickedElement.value.width - 30
+            currentClickedElement.value.width = 30
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴下边
+          if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+            currentClickedElement.value.y += currentClickedElement.value.height - 30
+            currentClickedElement.value.height = 30
+
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
           currentClickedElement.value.x += disX
           currentClickedElement.value.width -= disX
           currentClickedElement.value.y += disY
@@ -1343,18 +1492,285 @@ export function initGridContainer(
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
         if (currentScaleType === 'top_right') {
+          // 贴右边
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+            currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.height += currentClickedElement.value.y
+            currentClickedElement.value.y = 0
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴左边
+          if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+            currentClickedElement.value.width = 30
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴下边
+          if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+            currentClickedElement.value.y += currentClickedElement.value.height - 30
+            currentClickedElement.value.height = 30
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
           currentClickedElement.value.y += disY
           currentClickedElement.value.height -= disY
           currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
         if (currentScaleType === 'bottom_left') {
+          // 贴左边
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.width += currentClickedElement.value.x
+            currentClickedElement.value.x = 0
+
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴下边
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+            currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴右边
+          if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+            currentClickedElement.value.x += currentClickedElement.value.width - 30
+            currentClickedElement.value.width = 30
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+            currentClickedElement.value.height = 30
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
           currentClickedElement.value.x += disX
           currentClickedElement.value.width -= disX
           currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
           mouseFrom = { x: e.clientX, y: e.clientY }
         }
         if (currentScaleType === 'bottom_right') {
+          // 贴右边
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+            currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴下边
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+            currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴左边
+          if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+            currentClickedElement.value.width = 30
+
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+            currentClickedElement.value.height = 30
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
           currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
           currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
           mouseFrom = { x: e.clientX, y: e.clientY }
