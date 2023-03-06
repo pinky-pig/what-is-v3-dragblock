@@ -14,6 +14,7 @@ type ScaleType = 'top' | 'bottom' | 'left' | 'right' | 'top_left' | 'top_right' 
 
 export interface GridContainerProps {
   gridCells: GridCellsType[]
+  activated: boolean
   draggable: boolean
   resizable: boolean
   adsorbable: boolean
@@ -233,7 +234,24 @@ export function initGridContainer(
   })
 
   // 1.绑定鼠标事件
-  addMouseEvent()
+  watch(() => propsOption.activated, (v) => {
+    if (v) {
+      // 防止重复添加，先删除再添加
+      removeMouseEvent()
+      addMouseEvent()
+    }
+    else {
+      removeMouseEvent()
+    }
+  }, {
+    immediate: true,
+  })
+  // addMouseEvent()
+  function removeMouseEvent() {
+    window.removeEventListener('pointerdown', mousedown, false)
+    window.removeEventListener('pointermove', mousemove, false)
+    window.removeEventListener('pointerup', mouseup, false)
+  }
   function addMouseEvent() {
     window.addEventListener('pointerdown', mousedown, false)
     window.addEventListener('pointermove', mousemove, false)

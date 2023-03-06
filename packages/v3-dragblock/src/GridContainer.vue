@@ -5,6 +5,9 @@ import type { GridCellsType, GridContainerProps } from './GridContainer'
 import { initGridContainer } from './GridContainer'
 import BoundsSVGContainer from './BoundsSVGContainer.vue'
 const props: GridContainerProps = defineProps({
+  activated: {
+    default: true,
+  },
   gridCells: {
     default: [
       { id: '0', index: 0, x: 0, y: 0, width: 100, height: 100, component: '' },
@@ -66,6 +69,7 @@ onMounted(() => {
       }"
     />
     <BoundsSVGContainer
+      v-if="props.activated"
       v-model="currentClickedElement"
       :current-clicked-element="currentClickedElement"
       :adsorbed-line="adsorbedLine"

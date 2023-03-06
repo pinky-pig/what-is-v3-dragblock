@@ -29,6 +29,7 @@ const print = (val: string, e: any) => {
   <V3Dragblock
     class="V3Dragblock"
     :grid-cells="gridCells"
+    :activated="true"
     :draggable="true"
     :resizable="true"
     :adsorbable="true"
