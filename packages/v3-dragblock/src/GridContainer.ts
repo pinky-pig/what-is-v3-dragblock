@@ -297,6 +297,84 @@ export function initGridContainer(
         // currentClickedElement.value.y += disY
         // mouseFrom = { x: e.clientX, y: e.clientY }
 
+        // ///////////////////////////////////////////////////////////// //
+        // 如果是先超过左边
+        if (mouseTo.x - rect.left < 0) {
+          currentClickedElement.value.x = 0
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.y = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.y = rect.height - currentClickedElement.value.height
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.y += disY
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // 如果是先超过上边
+        if (mouseTo.y - rect.top < 0) {
+          currentClickedElement.value.y = 0
+
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.x = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.x = rect.width - currentClickedElement.value.width
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.x += disX
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // 如果先超过右边
+        if (rect.left + rect.width - mouseTo.x < 0) {
+          currentClickedElement.value.x = rect.width - currentClickedElement.value.width
+
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.y = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.y = rect.height - currentClickedElement.value.height
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.y += disY
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // 如果先超过下边
+        if (rect.top + rect.height - mouseTo.y < 0) {
+          currentClickedElement.value.y = rect.height - currentClickedElement.value.height
+
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.x = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.x = rect.width - currentClickedElement.value.width
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.x += disX
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // ///////////////////////////////////////////////////////////// //
+
         if (adsorbedLine.value.l.length === 0 && adsorbedLine.value.r.length === 0) {
           currentClickedElement.value.x += disX
           adsorbedLine.value.l = []
@@ -407,9 +485,87 @@ export function initGridContainer(
             createAttachedLineForDrag('b')
           }
         }
+
         emit('dragging', currentClickedElement.value)
       }
       if (transformMode.value === 'Drag' && propsOption.draggable && !propsOption.adsorbable) {
+        // ///////////////////////////////////////////////////////////// //
+        // 如果是先超过左边
+        if (mouseTo.x - rect.left < 0) {
+          currentClickedElement.value.x = 0
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.y = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.y = rect.height - currentClickedElement.value.height
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.y += disY
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // 如果是先超过上边
+        if (mouseTo.y - rect.top < 0) {
+          currentClickedElement.value.y = 0
+
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.x = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.x = rect.width - currentClickedElement.value.width
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.x += disX
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // 如果先超过右边
+        if (rect.left + rect.width - mouseTo.x < 0) {
+          currentClickedElement.value.x = rect.width - currentClickedElement.value.width
+
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.y = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.y = rect.height - currentClickedElement.value.height
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.y += disY
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // 如果先超过下边
+        if (rect.top + rect.height - mouseTo.y < 0) {
+          currentClickedElement.value.y = rect.height - currentClickedElement.value.height
+
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.x = 0
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.x = rect.width - currentClickedElement.value.width
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          currentClickedElement.value.x += disX
+          mouseFrom = { x: e.clientX, y: e.clientY }
+          return
+        }
+        // ///////////////////////////////////////////////////////////// //
         currentClickedElement.value.x += disX
         currentClickedElement.value.y += disY
         mouseFrom = { x: e.clientX, y: e.clientY }

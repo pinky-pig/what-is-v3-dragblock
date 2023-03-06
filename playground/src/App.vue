@@ -31,7 +31,7 @@ const print = (val: string, e: any) => {
     :grid-cells="gridCells"
     :draggable="true"
     :resizable="true"
-    :adsorbable="false"
+    :adsorbable="true"
     :adsorb-line-style="adsorbLineStyle"
     @dragging="print('dragging', $event)"
     @drag-start="print('drag-start', $event)"
