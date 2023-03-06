@@ -597,12 +597,14 @@ export function initGridContainer(
             currentClickedElement.value.x += currentClickedElement.value.width - 30
             currentClickedElement.value.width = 30
             createAttachedLineForScale()
+            mouseFrom = { x: e.clientX, y: e.clientY }
           }
           else {
             // 这里 mouseTo.x - rect.left 是为了判断 当前鼠标是否已经超过最左边
             if (mouseTo.x - rect.left < 0) {
               currentClickedElement.value.width += currentClickedElement.value.x
               currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
             }
             else {
               if (adsorbedLine.value.l.length === 0) {
@@ -639,11 +641,13 @@ export function initGridContainer(
           if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
             currentClickedElement.value.width = 30
             createAttachedLineForScale()
+            mouseFrom = { x: e.clientX, y: e.clientY }
           }
           else {
             if (rect.left + rect.width - mouseTo.x < 0) {
               currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
               currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
             }
             else {
               if (adsorbedLine.value.r.length === 0) {
@@ -677,11 +681,13 @@ export function initGridContainer(
             currentClickedElement.value.y += currentClickedElement.value.height - 30
             currentClickedElement.value.height = 30
             createAttachedLineForScale()
+            mouseFrom = { x: e.clientX, y: e.clientY }
           }
           else {
             if (mouseTo.y - rect.top < 0) {
               currentClickedElement.value.height += currentClickedElement.value.y
               currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
             }
             else {
               if (adsorbedLine.value.t.length === 0) {
@@ -717,11 +723,13 @@ export function initGridContainer(
           if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
             currentClickedElement.value.height = 30
             createAttachedLineForScale()
+            mouseFrom = { x: e.clientX, y: e.clientY }
           }
           else {
             if (rect.top + rect.height - mouseTo.y < 0) {
               currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
               currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
             }
             else {
               if (adsorbedLine.value.b.length === 0) {
