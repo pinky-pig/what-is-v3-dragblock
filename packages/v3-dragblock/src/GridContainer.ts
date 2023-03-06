@@ -284,10 +284,10 @@ export function initGridContainer(
     // 右边超过最右边边界 (rect.left + rect.width - mouseTo.x) < 0
     // 下边超过最下边边界 (rect.top + rect.height - mouseTo.y) < 0
 
-    // 左边超过最右边（ 最小宽度 30 ） mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) > 0
-    // 上边超过最下边（ 最小高度 30 ） mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) > 0
-    // 右边超过最左边（ 最小宽度 30 ） mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0
-    // 下边超过最上边（ 最小高度 30 ） mouseTo.y + 30 - rect.height < 0
+    // 左边超过最右边（ 最小宽度 30 ） mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0
+    // 上边超过最下边（ 最小高度 30 ） mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0
+    // 右边超过最左边（ 最小宽度 30 ） mouseTo.x - 30 - rect.left - currentClickedElement.value?.x <= 0
+    // 下边超过最上边（ 最小高度 30 ） mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0
 
     const disX = (mouseTo.x - mouseFrom.x)
     const disY = (mouseTo.y - mouseFrom.y)
@@ -540,7 +540,7 @@ export function initGridContainer(
           }
         }
         if (currentScaleType === 'bottom') {
-          if (mouseTo.y + 30 - rect.height <= 0) {
+          if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
             currentClickedElement.value.height = 30
             createAttachedLineForScale()
           }
@@ -577,14 +577,107 @@ export function initGridContainer(
           }
         }
         if (currentScaleType === 'top_left') {
+          // 贴左边
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.width += currentClickedElement.value.x
+            currentClickedElement.value.x = 0
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          // 贴上边
           if (mouseTo.y - rect.top < 0) {
             currentClickedElement.value.height += currentClickedElement.value.y
             currentClickedElement.value.y = 0
+
             if (mouseTo.x - rect.left < 0) {
               currentClickedElement.value.width += currentClickedElement.value.x
               currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
               return
             }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          // 贴右边
+          if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+            currentClickedElement.value.x += currentClickedElement.value.width - 30
+            currentClickedElement.value.width = 30
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          // 贴下边
+          if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+            currentClickedElement.value.y += currentClickedElement.value.height - 30
+            currentClickedElement.value.height = 30
+
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
             return
           }
 
@@ -685,6 +778,104 @@ export function initGridContainer(
           }
         }
         if (currentScaleType === 'top_right') {
+          // 贴右边
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+            currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - rect.top < 0) {
+            currentClickedElement.value.height += currentClickedElement.value.y
+            currentClickedElement.value.y = 0
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              createAttachedLineForScale()
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          // 贴左边
+          if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+            currentClickedElement.value.width = 30
+
+            if (mouseTo.y - rect.top < 0) {
+              currentClickedElement.value.height += currentClickedElement.value.y
+              currentClickedElement.value.y = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+              currentClickedElement.value.y += currentClickedElement.value.height - 30
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.y += disY
+            currentClickedElement.value.height -= disY
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
+          // 贴下边
+          if (mouseTo.y + 30 - rect.top - (currentClickedElement.value?.y + currentClickedElement.value?.height) >= 0) {
+            currentClickedElement.value.y += currentClickedElement.value.height - 30
+            currentClickedElement.value.height = 30
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              createAttachedLineForScale()
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
           if (adsorbedLine.value.r.length === 0 && adsorbedLine.value.t.length === 0) {
             currentClickedElement.value.y += disY
             currentClickedElement.value.height -= disY
@@ -773,6 +964,99 @@ export function initGridContainer(
           }
         }
         if (currentScaleType === 'bottom_left') {
+          // 贴左边
+          if (mouseTo.x - rect.left < 0) {
+            currentClickedElement.value.width += currentClickedElement.value.x
+            currentClickedElement.value.x = 0
+
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴下边
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+            currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴右边
+          if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+            currentClickedElement.value.x += currentClickedElement.value.width - 30
+            currentClickedElement.value.width = 30
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+            currentClickedElement.value.height = 30
+            if (mouseTo.x - rect.left < 0) {
+              currentClickedElement.value.width += currentClickedElement.value.x
+              currentClickedElement.value.x = 0
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x + 30 - rect.left - (currentClickedElement.value?.x + currentClickedElement.value?.width) >= 0) {
+              currentClickedElement.value.x += currentClickedElement.value.width - 30
+              currentClickedElement.value.width = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.x += disX
+            currentClickedElement.value.width -= disX
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
           if (adsorbedLine.value.l.length === 0 && adsorbedLine.value.b.length === 0) {
             currentClickedElement.value.x += disX
             currentClickedElement.value.width -= disX
@@ -861,6 +1145,95 @@ export function initGridContainer(
           }
         }
         if (currentScaleType === 'bottom_right') {
+          // 贴右边
+          if (rect.left + rect.width - mouseTo.x < 0) {
+            currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+            currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴下边
+          if (rect.top + rect.height - mouseTo.y < 0) {
+            currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+            currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              createAttachedLineForScale()
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴左边
+          if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+            currentClickedElement.value.width = 30
+
+            if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+              currentClickedElement.value.height = 30
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (rect.top + rect.height - mouseTo.y < 0) {
+              currentClickedElement.value.height += (elementLimitSize.height - currentClickedElement.value.height - currentClickedElement.value.y)
+              currentClickedElement.value.y = elementLimitSize.height - currentClickedElement.value.height
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              createAttachedLineForScale()
+              return
+            }
+
+            currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+          // 贴上边
+          if (mouseTo.y - 30 - rect.top - currentClickedElement.value?.y <= 0) {
+            currentClickedElement.value.height = 30
+
+            if (rect.left + rect.width - mouseTo.x < 0) {
+              currentClickedElement.value.width += (elementLimitSize.width - currentClickedElement.value.width - currentClickedElement.value.x)
+              currentClickedElement.value.x = elementLimitSize.width - currentClickedElement.value.width
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+
+            if (mouseTo.x - 30 - rect.left - currentClickedElement.value?.x < 0) {
+              currentClickedElement.value.width = 30
+              createAttachedLineForScale()
+              mouseFrom = { x: e.clientX, y: e.clientY }
+              return
+            }
+            currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
+            mouseFrom = { x: e.clientX, y: e.clientY }
+            return
+          }
+
           if (adsorbedLine.value.r.length === 0 && adsorbedLine.value.b.length === 0) {
             currentClickedElement.value.width += (mouseTo.x - mouseFrom.x)
             currentClickedElement.value.height += (mouseTo.y - mouseFrom.y)
