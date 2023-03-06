@@ -77,25 +77,25 @@ export function initGridContainer(
       if (transformMode.value === 'Resize') {
         // 2.缩放最贴边 最大
         // 最左，并且缩放的是左边
-        if (nVal.x < elementLimitSize.x && currentScaleType === 'left') {
-          nVal.width += nVal.x
-          nVal.x = 0
-        }
-        // 最上，缩放的是最上边
-        if (nVal.y <= elementLimitSize.y && currentScaleType === 'top') {
-          nVal.height += nVal.y
-          nVal.y = 0
-        }
-        // 最右，缩放的是最后边
-        if ((nVal.x + nVal.width) > elementLimitSize.width && currentScaleType === 'right') {
-          nVal.width += (elementLimitSize.width - nVal.width - nVal.x)
-          nVal.x = elementLimitSize.width - nVal.width
-        }
-        // 最下，缩放的是最下边
-        if ((nVal.y + nVal.height) > elementLimitSize.height && currentScaleType === 'bottom') {
-          nVal.height += (elementLimitSize.height - nVal.height - nVal.y)
-          nVal.y = elementLimitSize.height - nVal.height
-        }
+        // if (nVal.x < elementLimitSize.x && currentScaleType === 'left') {
+        //   nVal.width += nVal.x
+        //   nVal.x = 0
+        // }
+        // // 最上，缩放的是最上边
+        // if (nVal.y <= elementLimitSize.y && currentScaleType === 'top') {
+        //   nVal.height += nVal.y
+        //   nVal.y = 0
+        // }
+        // // 最右，缩放的是最后边
+        // if ((nVal.x + nVal.width) > elementLimitSize.width && currentScaleType === 'right') {
+        //   nVal.width += (elementLimitSize.width - nVal.width - nVal.x)
+        //   nVal.x = elementLimitSize.width - nVal.width
+        // }
+        // // 最下，缩放的是最下边
+        // if ((nVal.y + nVal.height) > elementLimitSize.height && currentScaleType === 'bottom') {
+        //   nVal.height += (elementLimitSize.height - nVal.height - nVal.y)
+        //   nVal.y = elementLimitSize.height - nVal.height
+        // }
 
         // if (currentScaleType === 'top_left') {
         //   if (nVal.x < elementLimitSize.x) {
@@ -139,50 +139,50 @@ export function initGridContainer(
         // }
 
         // 3.缩放最小
-        if (nVal.width <= 30 && currentScaleType === 'left') {
-          nVal.x += nVal.width - 30
-          nVal.width = 30
-        }
-        if (nVal.width <= 30 && currentScaleType === 'right')
-          nVal.width = 30
-        if (nVal.height <= 30 && currentScaleType === 'top') {
-          nVal.y += nVal.height - 30
-          nVal.height = 30
-        }
-        if (nVal.height <= 30 && currentScaleType === 'bottom')
-          nVal.height = 30
-        if (currentScaleType === 'top_left') {
-          if (nVal.width <= 30) {
-            nVal.x += nVal.width - 30
-            nVal.width = 30
-          }
-          if (nVal.height <= 30) {
-            nVal.y += nVal.height - 30
-            nVal.height = 30
-          }
-        }
-        if (currentScaleType === 'top_right') {
-          if (nVal.height <= 30) {
-            nVal.y += nVal.height - 30
-            nVal.height = 30
-          }
-          if (nVal.width <= 30)
-            nVal.width = 30
-        }
-        if (currentScaleType === 'bottom_left') {
-          if (nVal.width <= 30) {
-            nVal.x += nVal.width - 30
-            nVal.width = 30
-          }
-          if (nVal.height <= 30)
-            nVal.height = 30
-        }
-        if (currentScaleType === 'bottom_right') {
-          if (nVal.width <= 30)
-            nVal.width = 30
-          if (nVal.height <= 30)
-            nVal.height = 30
-        }
+        // if (nVal.width <= 30 && currentScaleType === 'left') {
+        //   nVal.x += nVal.width - 30
+        //   nVal.width = 30
+        // }
+        // if (nVal.width <= 30 && currentScaleType === 'right')
+        //   nVal.width = 30
+        // if (nVal.height <= 30 && currentScaleType === 'top') {
+        //   nVal.y += nVal.height - 30
+        //   nVal.height = 30
+        // }
+        // if (nVal.height <= 30 && currentScaleType === 'bottom')
+        //   nVal.height = 30
+        // if (currentScaleType === 'top_left') {
+        //   if (nVal.width <= 30) {
+        //     nVal.x += nVal.width - 30
+        //     nVal.width = 30
+        //   }
+        //   if (nVal.height <= 30) {
+        //     nVal.y += nVal.height - 30
+        //     nVal.height = 30
+        //   }
+        // }
+        // if (currentScaleType === 'top_right') {
+        //   if (nVal.height <= 30) {
+        //     nVal.y += nVal.height - 30
+        //     nVal.height = 30
+        //   }
+        //   if (nVal.width <= 30)
+        //     nVal.width = 30
+        // }
+        // if (currentScaleType === 'bottom_left') {
+        //   if (nVal.width <= 30) {
+        //     nVal.x += nVal.width - 30
+        //     nVal.width = 30
+        //   }
+        //   if (nVal.height <= 30)
+        //     nVal.height = 30
+        // }
+        // if (currentScaleType === 'bottom_right') {
+        //   if (nVal.width <= 30)
+        //     nVal.width = 30
+        //   if (nVal.height <= 30)
+        //     nVal.height = 30
+        // }
       }
     }
   },
