@@ -111,6 +111,10 @@ const gridCells = ref([
 
 盒子的类名，用于比如设置拖拽盒子的尺寸或是一些其他 style 样式。子元素位置是在这个盒子内部的，不能超过这个尺寸。
 
+### 🍔 `:activated="true"`
+
+是否激活功能，这里其实就是监听 `activated` 添加或删除鼠标监听事件。
+
 ### 🍕 `:grid-cells="gridCells"`
 
 > 需要用 `ref` 包着，具有响应性。
