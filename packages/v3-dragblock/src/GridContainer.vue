@@ -54,6 +54,8 @@ onMounted(() => {
 
 <template>
   <div ref="gridContainerRef" style="touch-action:none">
+    <!-- left: `${item.x}px`,
+        top: `${item.y}px`, -->
     <component
       :is="item.component"
       v-for="item, index in gridCells"
@@ -61,9 +63,13 @@ onMounted(() => {
       :key="item.id"
       v-model="gridCells[index]"
       :style="{
+        willChange: 'transform',
         position: 'absolute',
-        left: `${item.x}px`,
-        top: `${item.y}px`,
+        transform: `
+          translate3d(
+            ${item.x}px,
+            ${item.y}px,
+          0)`,
         width: `${item.width}px`,
         height: `${item.height}px`,
       }"
