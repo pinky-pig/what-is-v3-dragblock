@@ -11,6 +11,7 @@
     "build": "vite build packages/v3-dragblock",
     "docs": "vitepress dev packages/docs --open",
     "docs:build": "vitepress build packages/docs",
+    "playground:build": "vite build playground",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "devDependencies": {
