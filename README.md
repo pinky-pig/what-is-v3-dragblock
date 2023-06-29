@@ -13,9 +13,8 @@
 </p>
 
 使用 v3-dragblock 开发的示例。   
-使用文档地址：[Document](https://what-is-v3-dragblock.vercel.app/)  
-Versel 演示地址： [Demo - Vercel](https://v3-dragblock-demo.vercel.app/)  
-Github 代码地址： [Demo -Github](https://github.com/pinky-pig/what-is-drag-resize-attached-card)
+演示地址： [Demo - Vercel](https://dragblock.mmeme.me/)  
+仓库地址： [Demo -Github](https://github.com/pinky-pig/what-is-v3-dragblock)
 
 ## 🎉 Introduce
 
