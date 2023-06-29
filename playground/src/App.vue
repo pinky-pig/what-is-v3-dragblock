@@ -46,7 +46,7 @@ const print = (val: string, e: any) => {
 <style scoped>
 .V3Dragblock{
   width: 80vw;
-  height: 40vh;
+  height: 80vh;
   outline: 10px solid #474747;
   background: #f7f4f0;
   border-radius: 10px;
