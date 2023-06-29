@@ -41,6 +41,10 @@ const print = (val: string, e: any) => {
     @resize-start="print('resize-start', $event)"
     @resize-end="print('resize-end', $event)"
   />
+  <footer class="footer">
+    <a target="_blank" href="https://github.com/pinky-pig/what-is-v3-dragblock" class="item"> GitHub </a>
+    <a target="_blank" href="https://mmeme.me/" class="item"> Demo </a>
+  </footer>
 </template>
 
 <style scoped>
@@ -53,5 +57,29 @@ const print = (val: string, e: any) => {
   border-width: 1px;
   position: relative;
   overflow: hidden;
+}
+.footer{
+  width: 100%;
+  height: 50px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  margin-top: 15px;
+}
+.item{
+  margin: 0 10px;
+  color: #474747;
+  text-decoration: none;
+  margin: 10px 10px;
+  font-weight: 800;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 10px;
+}
+.item:hover{
+  color: #f7f4f0;
+  background: #474747;
+  border-radius: 5px;
 }
 </style>
