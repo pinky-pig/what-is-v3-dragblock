@@ -51,12 +51,13 @@ const print = (val: string, e: any) => {
 .V3Dragblock{
   width: 80vw;
   height: 80vh;
-  outline: 10px solid #474747;
+  outline: 10px solid #000;
   background: #f7f4f0;
   border-radius: 10px;
   border-width: 1px;
   position: relative;
   overflow: hidden;
+  box-shadow: 5px 5px 41px 5px rgba(0,0,0,.45);
 }
 .footer{
   width: 100%;
